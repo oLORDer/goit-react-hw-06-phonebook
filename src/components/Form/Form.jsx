@@ -1,32 +1,27 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import s from './form.module.scss';
 
-class Form extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+export default function Form({ onSubmit, contacts }) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    if (this.checkDuplicateName()) {
+    if (checkDuplicateName()) {
       return;
     }
 
-    const { name, number } = this.state;
-
-    this.props.onSubmit({ name, number, id: nanoid() });
-    this.reset();
+    onSubmit({ name, number, id: nanoid() });
+    reset();
   };
 
-  checkDuplicateName = () => {
-    const { contacts } = this.props;
+  const checkDuplicateName = () => {
     let isAlredyHasContact = false;
     let dublicatedName = null;
-    const normalizeName = this.state.name.toLowerCase();
+    const normalizeName = name.toLowerCase();
 
     contacts.map(
       el =>
@@ -41,50 +36,54 @@ class Form extends Component {
     return isAlredyHasContact;
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '', id: '', filter: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
 
-  handleChange = e => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    if (name === 'name') {
+      setName(value);
+      return;
+    }
+
+    if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  render() {
-    return (
-      <form className={s.form} onSubmit={this.handleSubmit}>
-        <label>
-          Name
-          <input
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            value={this.state.name}
-            onChange={this.handleChange}
-          />
-        </label>
-        <label>
-          <input
-            type="tel"
-            name="number"
-            value={this.state.number}
-            onChange={this.handleChange}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          ></input>
-        </label>
-        <button type="submit">Add contact</button>
-      </form>
-    );
-  }
+  return (
+    <form className={s.form} onSubmit={handleSubmit}>
+      <label>
+        Name
+        <input
+          type="text"
+          name="name"
+          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+          required
+          value={name}
+          onChange={handleChange}
+        />
+      </label>
+      <label>
+        <input
+          type="tel"
+          name="number"
+          value={number}
+          onChange={handleChange}
+          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+          required
+        ></input>
+      </label>
+      <button type="submit">Add contact</button>
+    </form>
+  );
 }
 
 Form.propTypes = {
   contacts: PropTypes.array.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
-
-export default Form;
