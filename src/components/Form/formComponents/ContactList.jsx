@@ -1,29 +1,42 @@
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
-import ContactItem from './ContactItem';
+import { useSelector, useDispatch } from 'react-redux';
 
-export default function ContactList({ currentContacts, deleteContact }) {
+import { removeContact } from 'redux/actions';
+
+import s from 'components/Form/form.module.scss';
+
+export default function ContactList() {
+  const dispatch = useDispatch();
+  const currentContacts = useSelector(state => state.contacts);
+  const filterWord = useSelector(state => state.filter);
+
+  const filteredContacts = currentContacts.filter(el =>
+    el.name.toLowerCase().includes(filterWord.toLowerCase())
+  );
+
+  const deleteContact = id => {
+    dispatch(removeContact(id));
+  };
+
   return (
     <div>
       <h2>Contacts</h2>
       <ul>
-        {currentContacts.map(el => {
+        {filteredContacts?.map(({ id, name, number }) => {
           return (
-            <ContactItem
-              key={nanoid()}
-              name={el.name}
-              number={el.number}
-              id={el.id}
-              deleteContact={deleteContact}
-            />
+            <li key={nanoid()} id={id} className={s.item}>
+              <div>{`${name}: ${number}`}</div>
+              <button
+                className={s.deleteBtn}
+                type="button"
+                onClick={() => deleteContact(id)}
+              >
+                delete
+              </button>
+            </li>
           );
         })}
       </ul>
     </div>
   );
 }
-
-ContactList.propTypes = {
-  currentContacts: PropTypes.array.isRequired,
-  deleteContact: PropTypes.func,
-};

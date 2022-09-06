@@ -1,9 +1,15 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+
+import { addContact } from 'redux/actions';
+
 import s from './form.module.scss';
 
-export default function Form({ onSubmit, contacts }) {
+export default function Form() {
+  const dispatch = useDispatch();
+  const currentContacts = useSelector(state => state.contacts);
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -14,7 +20,7 @@ export default function Form({ onSubmit, contacts }) {
       return;
     }
 
-    onSubmit({ name, number, id: nanoid() });
+    dispatch(addContact({ name, number, id: nanoid() }));
     reset();
   };
 
@@ -23,7 +29,7 @@ export default function Form({ onSubmit, contacts }) {
     let dublicatedName = null;
     const normalizeName = name.toLowerCase();
 
-    contacts.map(
+    currentContacts.map(
       el =>
         el.name.toLowerCase() === normalizeName &&
         ((isAlredyHasContact = true), (dublicatedName = el.name))
@@ -82,8 +88,3 @@ export default function Form({ onSubmit, contacts }) {
     </form>
   );
 }
-
-Form.propTypes = {
-  contacts: PropTypes.array.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-};
