@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Form from './Form/Form';
 import Filter from './Form/formComponents/Filter';
 import ContactList from './Form/formComponents/ContactList';
@@ -10,6 +12,8 @@ export default function App() {
     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
     { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
   ];
+
+  const dispatch = useDispatch();
 
   const [contacts, setContacts] = useState(
     JSON.parse(localStorage.getItem('contacts')) ?? initialContacts
@@ -33,12 +37,7 @@ export default function App() {
   };
 
   const formSubmitHandler = data => {
-    const newContact = {
-      name: data.name,
-      number: data.number,
-      id: data.id,
-    };
-    setContacts([newContact, ...contacts]);
+    dispatch(data);
   };
 
   const deleteContact = e => {
