@@ -1,11 +1,4 @@
-import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { ADD_CONTACT, REMOVE_CONTACT, SET_FILTER } from './types';
-
-const persistConfig = {
-  key: 'contacts',
-  storage,
-};
 
 const initialStore = {
   contacts: [
