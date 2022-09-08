@@ -11,29 +11,21 @@ const initialStore = {
   filter: '',
 };
 
-// export const increment = createAction('increment');
-// export const decrement = createAction('decrement');
-
-// const counterReducer = createReducer(0, {
-//   [increment]: (state, action) => {
-//     console.log(state);
-//     return state;
-//   },
-//   [decrement.type]: (state, action) => state - action.payload,
-// });
-
 const contacts = createReducer(initialStore, {
   [addContact]: (state, { payload }) => {
-    // console.log(state);
-    const newContact = [...state.contacts, payload];
-    return { ...state, contacts: newContact };
+    const newContact = [...state.items, payload];
+    return { ...state, items: newContact };
   },
   [removeContact]: (state, { payload }) => {
-    console.log(state);
-    const result = state.filter(item => item.id !== payload);
-    return { ...state, contacts: result };
+    const result = state.items.filter(item => item.id !== payload);
+    return { ...state, items: result };
+  },
+  [setFilter]: (store, { payload }) => {
+    return { ...store, filter: payload };
   },
 });
+
+export default contacts;
 
 // const filter = createReducer('', {
 //   [setFilter]: (_, { payload }) => payload,
@@ -53,5 +45,3 @@ const contacts = createReducer(initialStore, {
 //       return store;
 //   }
 // };
-
-export default contacts;

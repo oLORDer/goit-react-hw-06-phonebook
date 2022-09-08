@@ -8,7 +8,6 @@ import s from './form.module.scss';
 export default function Form() {
   const dispatch = useDispatch();
   const currentContacts = useSelector(state => state.contacts.items);
-  // console.log(useSelector(state => state.items));
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
