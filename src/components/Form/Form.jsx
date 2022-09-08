@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
 
 import { addContact } from 'redux/actions';
 
@@ -8,8 +7,8 @@ import s from './form.module.scss';
 
 export default function Form() {
   const dispatch = useDispatch();
-  const currentContacts = useSelector(state => state.contacts);
-
+  const currentContacts = useSelector(state => state.contacts.items);
+  // console.log(useSelector(state => state.items));
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -20,7 +19,7 @@ export default function Form() {
       return;
     }
 
-    dispatch(addContact({ name, number, id: nanoid() }));
+    dispatch(addContact({ name, number }));
     reset();
   };
 
@@ -29,7 +28,7 @@ export default function Form() {
     let dublicatedName = null;
     const normalizeName = name.toLowerCase();
 
-    currentContacts.map(
+    currentContacts?.map(
       el =>
         el.name.toLowerCase() === normalizeName &&
         ((isAlredyHasContact = true), (dublicatedName = el.name))

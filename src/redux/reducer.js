@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { addContact, removeContact, setFilter } from './actions';
 
 const initialStore = {
-  contacts: [
+  items: [
     { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
     { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
     { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
@@ -11,19 +11,33 @@ const initialStore = {
   filter: '',
 };
 
-const reducer = createReducer(initialStore, {
-  [addContact]: (store, { payload }) => {
-    const newContact = [...store.contacts, payload];
-    return { ...store, contacts: newContact };
+// export const increment = createAction('increment');
+// export const decrement = createAction('decrement');
+
+// const counterReducer = createReducer(0, {
+//   [increment]: (state, action) => {
+//     console.log(state);
+//     return state;
+//   },
+//   [decrement.type]: (state, action) => state - action.payload,
+// });
+
+const contacts = createReducer(initialStore, {
+  [addContact]: (state, { payload }) => {
+    // console.log(state);
+    const newContact = [...state.contacts, payload];
+    return { ...state, contacts: newContact };
   },
-  [removeContact]: (store, { payload }) => {
-    const result = store.contacts.filter(item => item.id !== payload);
-    return { ...store, contacts: result };
-  },
-  [setFilter]: (store, { payload }) => {
-    return { ...store, filter: payload };
+  [removeContact]: (state, { payload }) => {
+    console.log(state);
+    const result = state.filter(item => item.id !== payload);
+    return { ...state, contacts: result };
   },
 });
+
+// const filter = createReducer('', {
+//   [setFilter]: (_, { payload }) => payload,
+// });
 
 // const reducer = (store = initialStore, { type, payload }) => {
 //   switch (type) {
@@ -40,4 +54,4 @@ const reducer = createReducer(initialStore, {
 //   }
 // };
 
-export default reducer;
+export default contacts;

@@ -7,10 +7,10 @@ import s from 'components/Form/form.module.scss';
 
 export default function ContactList() {
   const dispatch = useDispatch();
-  const currentContacts = useSelector(state => state.contacts);
-  const filterWord = useSelector(state => state.filter);
-
-  const filteredContacts = currentContacts.filter(el =>
+  const currentContacts = useSelector(state => state.contacts.items);
+  const filterWord = useSelector(state => state.contacts.filter);
+  // console.log(useSelector(state => state.contacts));
+  const filteredContacts = currentContacts?.filter(el =>
     el.name.toLowerCase().includes(filterWord.toLowerCase())
   );
 

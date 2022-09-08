@@ -1,12 +1,10 @@
 import { nanoid } from 'nanoid';
 import { createAction } from '@reduxjs/toolkit';
 
-// import { ADD_CONTACT, REMOVE_CONTACT, SET_FILTER } from './types';
-
-export const addContact = createAction('contacts/add', prevState => {
+export const addContact = createAction('contacts/add', data => {
   return {
     payload: {
-      ...prevState,
+      ...data,
       id: nanoid(),
     },
   };
